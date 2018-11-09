@@ -10,7 +10,7 @@
 
 def sudoku(puzzle)
   start_puzzle(puzzle)
-
+  horizontal_solve(puzzle)
 end
 
 def start_puzzle(puzzle)
@@ -21,8 +21,12 @@ def create_unsolved_squares(line)
   line.map!{|square| square != 0 ? square : Array(1..9)}
 end
 
+def horizontal_solve(puzzle)
+  puzzle.map!{|line| solve_line(line)}
+end
+
 def solve_line(line)
-  line.map do |square|
+  line.map! do |square|
     solve_square(line, square)
   end
 end
