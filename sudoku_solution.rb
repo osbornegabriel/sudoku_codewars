@@ -45,12 +45,16 @@ def box_solve(puzzle)
 end
 
 def solve_line(line)
-  line.map!{|square| solve_square(line, square)}
+  line.map! do |square|
+    square = solve_square(line, square)
+    # square[0] if square.size == 1
+  end
 end
 
 def solve_square(line, square)
   return square if square.is_a?(Integer)
   square.reject!{|number| line.include?(number)}
+  return square[0] if square.size == 1
   square
 end
 
