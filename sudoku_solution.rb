@@ -22,10 +22,20 @@ def create_unsolved_squares(line)
 end
 
 def solve(puzzle)
-  horizontal_solve(puzzle)
-  puzzle = vertical_solve(puzzle)
-    # p "It's Coming..."
-  puzzle = box_solve(puzzle)
+  until solved?(puzzle) do
+    horizontal_solve(puzzle)
+    puzzle = vertical_solve(puzzle)
+      # p "It's Coming..."
+    puzzle = box_solve(puzzle)
+  end
+  puzzle
+end
+
+def solved?(puzzle)
+  "heeeeeey"
+  puzzle.reduce(:+).each do |square|
+    return false if square.is_a?(Array)
+  end
 end
 
 def horizontal_solve(puzzle)
@@ -47,7 +57,6 @@ end
 def solve_line(line)
   line.map! do |square|
     square = solve_square(line, square)
-    # square[0] if square.size == 1
   end
 end
 
