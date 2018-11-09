@@ -9,13 +9,26 @@
 #           [0,0,0,0,8,0,0,7,9]]
 
 def sudoku(puzzle)
-  create_unsolved_squares(puzzle)
+  start_puzzle(puzzle)
+
 end
 
-def create_unsolved_squares(puzzle)
-  line[0].map{|square| square != 0 ? square : [1..9]}
+def start_puzzle(puzzle)
+  puzzle.map!{|line| create_unsolved_squares(line)}
+end
+
+def create_unsolved_squares(line)
+  line.map!{|square| square != 0 ? square : Array(1..9)}
 end
 
 def solve_line(line)
+  line.map do |square|
+    solve_square(line, square)
+  end
+end
 
+def solve_square(line, square)
+  return square if square.is_a?(Integer)
+  square.reject!{|number| line.include?(number)}
+  square
 end
