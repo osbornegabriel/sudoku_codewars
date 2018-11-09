@@ -35,14 +35,37 @@ def vertical_solve(puzzle)
   horizontal_solve(transposed_puzzle).transpose
 end
 
+def box_solve(puzzle)
+
+end
+
 def solve_line(line)
-  line.map! do |square|
-    solve_square(line, square)
-  end
+  line.map!{|square| solve_square(line, square)}
 end
 
 def solve_square(line, square)
   return square if square.is_a?(Integer)
   square.reject!{|number| line.include?(number)}
   square
+end
+
+def create_boxes(puzzle)
+  thirded_puzzle = third_it(puzzle)
+  boxed_puzzle = thirded_puzzle.map!{|third| p box_it(third)}
+  boxed_puzzle.reduce(:+)
+end
+
+def third_it(array)
+  first_third = array.slice(0,3)
+  second_third = array.slice(3,3)
+  third_third = array.slice(6,3)
+  [first_third, second_third, third_third]
+end
+
+def box_it(third_of_puz)
+  sequenced = third_of_puz.map{|line| third_it(line)}
+  box_one = sequenced.map{|line| line[0]}.flatten
+  box_two = sequenced.map{|line| line[1]}.flatten
+  box_three = sequenced.map{|line| line[2]}.flatten
+  [box_one, box_two, box_three]
 end
