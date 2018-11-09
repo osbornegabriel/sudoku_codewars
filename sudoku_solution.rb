@@ -24,6 +24,8 @@ end
 def solve(puzzle)
   horizontal_solve(puzzle)
   puzzle = vertical_solve(puzzle)
+    # p "It's Coming..."
+  puzzle = box_solve(puzzle)
 end
 
 def horizontal_solve(puzzle)
@@ -31,12 +33,15 @@ def horizontal_solve(puzzle)
 end
 
 def vertical_solve(puzzle)
+  puzzle
   transposed_puzzle = puzzle.transpose
   horizontal_solve(transposed_puzzle).transpose
 end
 
 def box_solve(puzzle)
-
+  box_puzzle = box_unbox(puzzle)
+  horizontal_solve(box_puzzle)
+  box_unbox(box_puzzle)
 end
 
 def solve_line(line)
@@ -49,9 +54,9 @@ def solve_square(line, square)
   square
 end
 
-def create_boxes(puzzle)
+def box_unbox(puzzle)
   thirded_puzzle = third_it(puzzle)
-  boxed_puzzle = thirded_puzzle.map!{|third| p box_it(third)}
+  boxed_puzzle = thirded_puzzle.map!{|third| box_it(third)}
   boxed_puzzle.reduce(:+)
 end
 
@@ -64,8 +69,8 @@ end
 
 def box_it(third_of_puz)
   sequenced = third_of_puz.map{|line| third_it(line)}
-  box_one = sequenced.map{|line| line[0]}.flatten
-  box_two = sequenced.map{|line| line[1]}.flatten
-  box_three = sequenced.map{|line| line[2]}.flatten
+  box_one = sequenced.map{|line| line[0]}.reduce(:+)
+  box_two = sequenced.map{|line| line[1]}.reduce(:+)
+  box_three = sequenced.map{|line| line[2]}.reduce(:+)
   [box_one, box_two, box_three]
 end
